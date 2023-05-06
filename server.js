@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const db = require('./db/db.json')
-// const api = require('./public/assets/js/index.js');
+// const api = require('./public/notes.html');
 
 const PORT = process.env.PORT || 3001;
 
@@ -12,31 +12,35 @@ const app = express();
 
 app.use(express.static('public'));
 
-// WHEN I open the Note Taker
+// WHEN I open the Note Taker FINISHED
 // THEN I am presented with a landing page with a link to a notes page
 // use GET /notes to return the notes.html file
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/public/index.html'))
-});
 
 app.get('/notes', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/index.html'))
+});
 //post route. look up the lecture that covers this in lesson 17
 
 
-// WHEN I click on the link to the notes page
+// WHEN I click on the link to the notes page FINISHED
 // THEN I am presented with a page with existing notes listed in the left-hand column, plus empty fields to enter a new note title and the note’s text in the right-hand column
 // 
 
 // WHEN I enter a new note title and the note’s text
 // THEN a Save icon appears in the navigation at the top of the page
 // use GET /api/notes which should read the db.json file and return the saved notes as JSON. I'm pretty sure this should display the saved notes as described above.
-app.get('/api/notes', (req, res) => {
-  res.status(200).json(db);
+app.get("/api/notes", (req, res) => {
+  console.log(`${req.method} request received for notes`);
+  fs.readFile("./db/db.json").then((notes) => res.json(JSON.parse(notes)));
 });
 
+fs.writeFile('./db/db.json', `${req.method}`, (err) =>
+err
+  ? console.error(err) : console.log('error found'));
 
 // WHEN I click on the Save icon
 // THEN the new note I have entered is saved and appears in the left-hand column with the other existing notes
