@@ -78,4 +78,9 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/index.html'))
 });
 
-app.listen(3001, () => console.log(`App listening at http://localhost:${PORT}`));
+app.listen(process.env.PORT || 3001, () => console.log(`App listening at http://localhost:${PORT}`));
+
+
+
+// type in heroku login in terminal. type in heroku create to create a heroku app then git push heroku main
+// add the :id. uuid is recommended
