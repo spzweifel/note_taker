@@ -12,3 +12,5 @@ MIT license
 
 
 ## Link to video
+
+![video](assets/NoteTakerVideo.webm)
