@@ -4,6 +4,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs');
 const db = require('./db/db.json')
+const { v4: uuidv4 } = require('uuid');
 // const api = require('./public/notes.html');
 
 const PORT = process.env.PORT || 3001;
@@ -45,21 +46,27 @@ app.get("/api/notes", (req, res) => {
 app.post('/api/notes', (req, res) => {
   const { title, text} = req.body;
 
+  // const newId = Math.floor(Math.random() * 1000) + 1;
   if (title && text) {
     const newNote = {
-      title,
-      text,
+      title: title,
+      text: text,
+      id: uuidv4()
     }
+    
     fs.readFile("./db/db.json", (err, data) => {
       var oldNotes = JSON.parse(data)
       oldNotes.push(newNote)
     
     fs.writeFile("./db/db.json", JSON.stringify(oldNotes), (err) => {
-      res.json(oldNotes)
+      res.json(newNote)
     })
   })
   }
 })
+
+
+
 
 // WHEN I click on an existing note in the list in the left-hand column FINISHED
 // THEN that note appears in the right-hand column
